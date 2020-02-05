@@ -12,11 +12,12 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
+  GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     bool isMobile = userMobileLayout(context);
     return Scaffold(
+      key: _key,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -47,7 +48,11 @@ class _ScreenHomeState extends State<ScreenHome> {
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(height: 32),
-                            GradientButton(text: 'Let\'s work together')
+                            GradientButton(
+                              text: 'Let\'s work together',
+                              callback: () =>
+                                  showSnackbar('Let\'s work together'),
+                            )
                           ],
                         ),
                       ),
@@ -123,7 +128,10 @@ class _ScreenHomeState extends State<ScreenHome> {
               ),
             ),
             SizedBox(height: 56),
-            GradientButton(text: 'Know More of My Work'),
+            GradientButton(
+              text: 'Know More of My Work',
+              callback: () => showSnackbar('Know More of My Work'),
+            ),
             SizedBox(height: 56),
             Container(
               padding: EdgeInsets.symmetric(vertical: isMobile ? 56 : 102),
@@ -150,7 +158,10 @@ class _ScreenHomeState extends State<ScreenHome> {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 56),
-                        GradientButton(text: 'Let\'s Work Together'),
+                        GradientButton(
+                            text: 'Let\'s Work Together',
+                            callback: () =>
+                                showSnackbar('Let\'s Work Together')),
                         SizedBox(height: 24)
                       ]),
                     ),
@@ -173,8 +184,7 @@ class _ScreenHomeState extends State<ScreenHome> {
       Text('What I do', style: title2Style),
       SizedBox(height: 48),
       GradientButton(
-        text: 'Know more ->',
-      )
+          text: 'Know more ->', callback: () => showSnackbar('Know more ->'))
     ]);
   }
 
@@ -186,5 +196,12 @@ class _ScreenHomeState extends State<ScreenHome> {
         children: list1.map((model) => FeatureUI(model: model)).toList(),
       ),
     );
+  }
+
+  void showSnackbar(String message) {
+    _key.currentState.showSnackBar(SnackBar(
+      content: Text('\'$message\' clicked!!'),
+      behavior: SnackBarBehavior.floating,
+    ));
   }
 }
